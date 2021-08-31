@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import http from "./services/httpservice";
+import http from "./services/httpService";
 import config from "./config.json";
 import { ToastContainer, toast } from "react-toastify";
 import "./App.css";
@@ -44,7 +44,7 @@ class App extends Component {
     this.setState({ posts });
 
     try {
-      await http.delete(`${apiEndPoint}/${post.id}`);
+      await http.delete(`s${apiEndPoint}/${post.id}`);
     } catch (error) {
       //expected: client errors(404, 400)
       if (error.response && error.response.status === 404) {
