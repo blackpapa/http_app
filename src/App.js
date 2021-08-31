@@ -35,10 +35,24 @@ class App extends Component {
   };
 
   handleDelete = async (post) => {
+    const originalPosts = [...this.state.posts];
+
     const posts = this.state.posts.filter((p) => p.id !== post.id);
     this.setState({ posts });
 
-    await axios.delete(`${apiEndPoint}/${post.id}`);
+    try {
+      await axios.delete(`${apiEndPoint}/${post.id}`);
+    } catch (error) {
+      //expected: client errors(404, 400)
+      if (error.response && error.response.status === 404) {
+        alert("The post has already been deleted");
+      } else {
+        //unexpected: db crash, server shut down
+        console.log("Logging the error", error);
+      }
+
+      this.setState({ posts: originalPosts });
+    }
   };
 
   render() {
